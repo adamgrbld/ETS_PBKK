@@ -1,17 +1,22 @@
-﻿@{
-    ViewBag.Title = "Contact";
+﻿@using PointOfSales.Models
+@model IEnumerable<ItemModel>
+
+@{
+    ViewBag.Title = "Item List";
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+<table cellpadding="0" cellspacing="0">
+    <tr>
+        <th>Item Id</th>
+        <th>Name</th>
+    </tr>
+    @foreach (ItemModel item in Model)
+    {
+        <tr>
+            <td>@item.ItemId</td>
+            <td>@item.Name</td>
+        </tr>
+    }
+</table>
