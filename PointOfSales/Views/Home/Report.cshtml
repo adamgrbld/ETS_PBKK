@@ -1,7 +1,24 @@
-﻿@{
-    ViewBag.Title = "About";
+﻿@using PointOfSales.Models
+@model IEnumerable<TransactionModel>
+
+@{
+    ViewBag.Title = "Report";
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<table cellpadding="0" cellspacing="0">
+    <tr>
+        <th>Transaction Id</th>
+        <th>Total Price</th>
+        <th>Created at</th>
+    </tr>
+    @foreach (TransactionModel transaction in Model)
+    {
+        <tr>
+            <td>@transaction.TransactionId</td>
+            <td>@transaction.TotalPrice</td>
+            <td>@transaction.CreatedAt</td>
+        </tr>
+    }
+</table>
