@@ -65,7 +65,6 @@
                 <div class="text-center" style="background-color:#E5F61A;">
                     <h3>Total Harga = Rp. @total_price.ToString("#,##0.00")</h3>
                 </div>
-                <!-- TODO: Link to checkout  -->
                 <form action="Home/Checkout" method="post">
                     <input type="hidden" name="TotalPrice" value="@total_price">
                     <button type="submit" class="btn btn-success btn-block">Bayar</button>

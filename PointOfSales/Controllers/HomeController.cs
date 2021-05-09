@@ -274,6 +274,7 @@ namespace PointOfSales.Controllers
 
             return View(transactions);
         }
+
         public ActionResult Bill(int id)
         {
             ViewBag.Message = "Bill page.";
