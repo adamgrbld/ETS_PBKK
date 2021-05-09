@@ -2,74 +2,42 @@
 @model dynamic
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Point of Sales";
 }
-@*<style>
-    #t01 {
-        width: 50%;
-    }
 
-    #t01, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
+<h1 class="text-center mb-4">@ViewBag.Title</h1>
 
-    th, td {
-        padding: 15px;
-        text-align: left;
-    }
-
-    #t01 tr:nth-child(even) {
-        background-color: #eee;
-    }
-
-    #t01 tr:nth-child(odd) {
-        background-color: #fff;
-    }
-
-    #t01 th {
-        background-color: black;
-        color: white;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    .column {
-        float: left;
-        width: 10%;
-        padding: 5px;
-    }
-
-    /* Clearfix (clear floats) */
-    .row::after {
-        content: "";
-        clear: both;
-        display: table;
-    }
-</style>*@
-<div class="container-fluid">
+<div class="container-fluid p-0">
     <div class="row">
-
-        <div class="col-sm-6">
-            @for (var i = 0; i < 7; i++)
+        <div class="col d-flex flex-row mr-2">
+            @foreach (ItemModel item in Model.Items)
             {
-                
-                    <div class="col-sm-3">
-                        <div class="card" style="border:1px ; border-style: solid; margin-bottom:10px">
-                            <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/220px-SNice.svg.png" alt="Card image cap" width="70%">
-                            <div class="card-body">
-                                <h5 class="card-title">Test</h5>
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
+                <div class="col-3 px-1">
+                    <div class="card">
+                        <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/220px-SNice.svg.png" alt="Card image cap">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h5>@item.Name</h5>
+                            </div>
+                            <div class="card-text">
+                                <p>Rp. @item.Price.ToString("#,##0.00")</p>
+                                <form class="text-center">
+                                    <div class="form-group">
+                                        <input type="hidden" name="ItemId" value="@item.ItemId"/>
+                                        <label>Quantity: </label>
+                                        <input class="form-control" type="number" name="Quantity" value="0" min="0" max="@item.Stock" required/>
+                                        <button type="submit" class="mt-2 btn btn-primary btn-block btn-sm">Add to Cart</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    }
+                </div>
+            }
         </div>
-        <div class="col-sm-1"></div>
-        <div class="col-sm-5">
+        <div class="col-5">
             <div>
+                @{int total_price = 0;}
                 <table class="table table-striped table-bordered">
                     <tr>
                         <th>Name</th>
@@ -77,14 +45,15 @@
                     </tr>
                     @foreach (CartModel cart in Model.Carts)
                     {
+                        total_price += cart.Amount*cart.Item.Price;
                         <tr>
                             <td>@cart.Item.Name</td>
-                            <td>@(cart.Amount*cart.Item.Price)</td>>
+                            <td>Rp. @((cart.Amount*cart.Item.Price).ToString("#,##0.00"))</td>
                         </tr>
                     }
                 </table>
                 <div class="text-center" style="background-color:#E5F61A;">
-                    <h3>Total Harga = Rp.</h3>
+                    <h3>Total Harga = Rp. @total_price.ToString("#,##0.00")</h3>
                 </div>
                 <button type="button" class="btn btn-success btn-block">Bayar</button>
                 <div style="margin-bottom:2px"></div>

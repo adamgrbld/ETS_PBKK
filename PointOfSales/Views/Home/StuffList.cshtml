@@ -1,6 +1,11 @@
 ﻿@using PointOfSales.Models
 @model IEnumerable<ItemModel>
 
+@{
+    ViewBag.Title = "Daftar Barang";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" style="margin-bottom: 20px">
     Tambah
