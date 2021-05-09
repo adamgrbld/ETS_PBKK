@@ -47,7 +47,7 @@ namespace PointOfSales.Controllers
             List<CartModel> my_carts = new List<CartModel>();
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "SELECT Items.Name, Items.Price, Carts.Amount FROM Items INNER JOIN Carts ON Carts.ItemId = Items.ItemId WHERE Carts.TransactionId IS NULL";
+                string query = "SELECT Items.Name, Items.Price, Carts.CartId, Carts.Amount FROM Items INNER JOIN Carts ON Carts.ItemId = Items.ItemId WHERE Carts.TransactionId IS NULL";
                 using (MySqlCommand cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
@@ -64,6 +64,7 @@ namespace PointOfSales.Controllers
 
                             my_carts.Add(new CartModel
                             {
+                                CartId = Convert.ToInt32(sdr["CartId"])
                                 Item = my_item,
                                 Amount = Convert.ToInt32(sdr["Amount"])
                             });
@@ -88,7 +89,7 @@ namespace PointOfSales.Controllers
             string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "SELECT ItemId, Name FROM Items";
+                string query = "SELECT * FROM Items";
                 using (MySqlCommand cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
@@ -101,6 +102,9 @@ namespace PointOfSales.Controllers
                             {
                                 ItemId = Convert.ToInt32(sdr["ItemId"]),
                                 Name = sdr["Name"].ToString(),
+                                Price = Convert.ToInt32(sdr["Price"]),
+                                Stock = Convert.ToInt32(sdr["Stock"]),
+                                Image = sdr["Image"].ToString(),
                             });
                         }
                     }

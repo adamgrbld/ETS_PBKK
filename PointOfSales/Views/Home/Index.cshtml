@@ -21,6 +21,7 @@
                             </div>
                             <div class="card-text">
                                 <p>Rp. @item.Price.ToString("#,##0.00")</p>
+                                <!-- TODO: Link to add item to cart -->
                                 <form class="text-center">
                                     <div class="form-group">
                                         <input type="hidden" name="ItemId" value="@item.ItemId"/>
@@ -40,8 +41,9 @@
                 @{int total_price = 0;}
                 <table class="table table-striped table-bordered">
                     <tr>
-                        <th>Name</th>
-                        <th>Price</th>
+                        <th>Nama Barang</th>
+                        <th>Harga</th>
+                        <th></th>
                     </tr>
                     @foreach (CartModel cart in Model.Carts)
                     {
@@ -49,14 +51,22 @@
                         <tr>
                             <td>@cart.Item.Name</td>
                             <td>Rp. @((cart.Amount*cart.Item.Price).ToString("#,##0.00"))</td>
+                            <td class="text-center">
+                                <!-- TODO: Link to delete 1 item from cart -->
+                                <form>
+                                    <input type="hidden" name="CartId" value="@cart.CartId"/>
+                                    <button type="submit" class="btn btn-sm btn-danger">x</button>
+                                </form>
+                            </td>
                         </tr>
                     }
                 </table>
                 <div class="text-center" style="background-color:#E5F61A;">
                     <h3>Total Harga = Rp. @total_price.ToString("#,##0.00")</h3>
                 </div>
+                <!-- TODO: Link to checkout  -->
                 <button type="button" class="btn btn-success btn-block">Bayar</button>
-                <div style="margin-bottom:2px"></div>
+                <!-- TODO: Link to delete cart  -->
                 <button type="button" class="btn btn-danger btn-block">Batal</button>
             </div>
         </div>
