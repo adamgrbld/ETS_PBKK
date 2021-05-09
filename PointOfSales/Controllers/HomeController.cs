@@ -36,7 +36,8 @@ namespace PointOfSales.Controllers
                                 ItemId = Convert.ToInt32(sdr["ItemId"]),
                                 Name = sdr["Name"].ToString(),
                                 Price = Convert.ToInt32(sdr["Price"]),
-                                Stock = Convert.ToInt32(sdr["Stock"])
+                                Stock = Convert.ToInt32(sdr["Stock"]),
+                                Image = sdr["Image"].ToString()
                             });
                         }
                     }
@@ -237,23 +238,24 @@ namespace PointOfSales.Controllers
         [HttpPost]
         public ActionResult CreateBarang(string brnama, int brharga, int brstok, HttpPostedFileBase brimage)
         {
-            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
-            using (MySqlConnection con = new MySqlConnection(constr))
+            string path = "";
+            if (brimage != null)    
             {
-                string query = "INSERT INTO Items (ItemId, Name, Price, Stock, Image) VALUES (null, '" + 
-                    brnama + "', " + brharga + ", " +  brstok + "," + "'kosong'" + ")";
-                using (MySqlCommand cmd = new MySqlCommand(query))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    using (MySqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        while (sdr.Read())
-                        {
+                path = Path.Combine(Server.MapPath("~/UploadedFiles"), Path.GetFileName(brimage.FileName));    
+                brimage.SaveAs(path);     
 
-                        }
+                string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+                using (MySqlConnection con = new MySqlConnection(constr))
+                {
+                    string query = "INSERT INTO Items (ItemId, Name, Price, Stock, Image) VALUES (null, '" + 
+                        brnama + "', " + brharga + ", " +  brstok + "," + "'" + Path.GetFileName(brimage.FileName) + "')";
+                    using (MySqlCommand cmd = new MySqlCommand(query))
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
                     }
-                    con.Close();
                 }
             }
             return RedirectToAction("StuffList");

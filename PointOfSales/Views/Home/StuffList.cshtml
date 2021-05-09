@@ -23,7 +23,7 @@
             </div>
             <div class="modal-body">
                 <form style="display: flex; flex-direction: column" method="post"
-                      action="CreateBarang">
+                      action="CreateBarang" enctype="multipart/form-data">
                     <div class="form-group" style="display: flex;">
                         <label for="brnama" style="margin-top: 6px; margin-right: 10px">Nama: </label>
                         <input type="text" class="form-control" id="brnama" name="brnama" placeholder="Nama"
@@ -65,11 +65,11 @@
     @foreach (ItemModel item in Model)
     {
         <tr>
-            <td>@item.ItemId</td>
-            <td>@item.Name</td>
-            <td>Rp. @item.Price.ToString("#,##0.00")</td>
-            <td>@item.Stock</td>
-            <td>@item.Image</td>
+            <td class="align-middle">@item.ItemId</td>
+            <td class="align-middle">@item.Name</td>
+            <td class="align-middle">Rp. @item.Price.ToString("#,##0.00")</td>
+            <td class="align-middle">@item.Stock</td>
+            <td class="align-middle"><img src="~/UploadedFiles/@item.Image" alt="@item.Image"/></td>
         </tr>
     }
 </table>
