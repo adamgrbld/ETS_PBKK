@@ -64,7 +64,7 @@ namespace PointOfSales.Controllers
 
                             my_carts.Add(new CartModel
                             {
-                                CartId = Convert.ToInt32(sdr["CartId"])
+                                CartId = Convert.ToInt32(sdr["CartId"]),
                                 Item = my_item,
                                 Amount = Convert.ToInt32(sdr["Amount"])
                             });
@@ -79,6 +79,24 @@ namespace PointOfSales.Controllers
             models.Carts = my_carts;
 
             return View(models);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateCart(int ItemId, int Amount)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                string query = "INSERT INTO Carts (CartId, ItemId, TransactionID, Amount) VALUES (NULL, " + 
+                    ItemId + ", NULL, " + Amount + ")";
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         public ActionResult StuffList()
@@ -116,7 +134,7 @@ namespace PointOfSales.Controllers
         }
 
         [HttpPost]
-        public ActionResult createBarang(string brnama, int brharga, int brstok, HttpPostedFileBase brimage)
+        public ActionResult CreateBarang(string brnama, int brharga, int brstok, HttpPostedFileBase brimage)
         {
             string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))

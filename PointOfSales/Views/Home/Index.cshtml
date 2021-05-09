@@ -9,32 +9,34 @@
 
 <div class="container-fluid p-0">
     <div class="row">
-        <div class="col d-flex flex-row mr-2">
-            @foreach (ItemModel item in Model.Items)
-            {
-                <div class="col-3 px-1">
-                    <div class="card">
-                        <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/220px-SNice.svg.png" alt="Card image cap">
-                        <div class="card-body">
-                            <div class="card-title">
-                                <h5>@item.Name</h5>
-                            </div>
-                            <div class="card-text">
-                                <p>Rp. @item.Price.ToString("#,##0.00")</p>
-                                <!-- TODO: Link to add item to cart -->
-                                <form class="text-center">
-                                    <div class="form-group">
-                                        <input type="hidden" name="ItemId" value="@item.ItemId"/>
-                                        <label>Quantity: </label>
-                                        <input class="form-control" type="number" name="Quantity" value="0" min="0" max="@item.Stock" required/>
-                                        <button type="submit" class="mt-2 btn btn-primary btn-block btn-sm">Add to Cart</button>
-                                    </div>
-                                </form>
+        <div class="col mr-2">
+            <div class="row">
+                @foreach (ItemModel item in Model.Items)
+                {
+                    <div class="col-3 px-1 mb-2">
+                        <div class="card">
+                            <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/220px-SNice.svg.png" alt="Card image cap">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h5>@item.Name</h5>
+                                </div>
+                                <div class="card-text">
+                                    <p>Rp. @item.Price.ToString("#,##0.00")</p>
+                                    <!-- TODO: Link to add item to cart -->
+                                    <form class="text-center" action="Home/UpdateCart" method="post">
+                                        <div class="form-group">
+                                            <input type="hidden" name="ItemId" value="@item.ItemId"/>
+                                            <label>Quantity: </label>
+                                            <input class="form-control" type="number" name="Amount" value="1" min="1" max="@item.Stock" required/>
+                                            <button type="submit" class="mt-2 btn btn-primary btn-block btn-sm">Add to Cart</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
         <div class="col-5">
             <div>
@@ -49,7 +51,7 @@
                     {
                         total_price += cart.Amount*cart.Item.Price;
                         <tr>
-                            <td>@cart.Item.Name</td>
+                            <td>@cart.Item.Name (@cart.Amount)</td>
                             <td>Rp. @((cart.Amount*cart.Item.Price).ToString("#,##0.00"))</td>
                             <td class="text-center">
                                 <!-- TODO: Link to delete 1 item from cart -->
