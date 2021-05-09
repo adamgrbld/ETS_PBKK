@@ -175,14 +175,15 @@ namespace PointOfSales.Controllers
         public ActionResult Bill()
         {
             ViewBag.Message = "Bill page.";
+            return View();
 
-            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+/*            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
 
             List<TransactionModel> transactions = new List<TransactionModel>();
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "SELECT TransactionsId, I.Name, I.Price FROM Transactions, Items I Where"
-            }
+                string query = "SELECT T.TransactionsId, I.Name, I.Price FROM Transactions T, Items I, Carts C WHERE T.TransactionsId = C.TransactionsId "
+            }*/
         }
     }
 }
