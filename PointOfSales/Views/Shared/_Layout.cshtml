@@ -6,34 +6,41 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .moveToBottom {
+            position: absolute;
+            bottom: 0;
+        }
+        .menuHover {
+            background: #FFFF00;
+            padding-top: 1px;
+            padding-bottom: 10px;
+            color: black;
+        }
+        .menuHover:hover {
+            background: #CCCC00
+        }
+    </style>
 </head>
 <body>
+    <!--
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
-        </div>
+
     </div>
-    <div class="container body-content">
+    -->
+    <div class="container body-content" style="margin-bottom: 60px">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
+    <footer>
+        <table width="100%" class="navbar navbar-inverse" style="position: fixed; bottom: 0">
+            <tr>
+                <th class="text-center menuHover">@Html.ActionLink("Tambah Transaksi", "Index", "Home")</th>
+                <th class="text-center menuHover">@Html.ActionLink("Daftar Barang", "StuffList", "Home")</th>
+                <th class="text-center menuHover">@Html.ActionLink("Laporan Penjualan", "Report", "Home")</th>
+            </tr>
+        </table>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
