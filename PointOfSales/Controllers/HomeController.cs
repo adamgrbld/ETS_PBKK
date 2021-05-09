@@ -98,7 +98,17 @@ namespace PointOfSales.Controllers
                 }
 
                 if (cartCount > 0) {
-                    query = "UPDATE Carts SET Amount = Amount + " + Amount + " WHERE TransactionID IS NULL AND ItemId = " + ItemId;
+                    int itemStock = 0;
+                    query = "SELECT Stock FROM items WHERE ItemId = " + ItemId;
+                    using (MySqlCommand cmd = new MySqlCommand(query))
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        itemStock =  Convert.ToInt32(cmd.ExecuteScalar());
+                        con.Close();
+                    }
+
+                    query = "UPDATE Carts SET Amount = if(Amount + " + Amount + " > " + itemStock + ", " + itemStock + ", Amount + " + Amount + ") WHERE TransactionID IS NULL AND ItemId = " + ItemId;
                     using (MySqlCommand cmd = new MySqlCommand(query))
                     {
                         cmd.Connection = con;
