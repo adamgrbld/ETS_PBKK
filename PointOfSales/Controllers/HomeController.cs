@@ -180,7 +180,7 @@ namespace PointOfSales.Controllers
                 }
                 con.Close();
             }
-            return RedirectToAction("Checkout", new { id = NewTransactionId });
+            return RedirectToAction("Bill", new { id = NewTransactionId });
         }
 
         public ActionResult StuffList()
