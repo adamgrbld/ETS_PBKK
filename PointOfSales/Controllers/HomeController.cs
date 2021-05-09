@@ -22,7 +22,7 @@ namespace PointOfSales.Controllers
             List<ItemModel> items = new List<ItemModel>();
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "SELECT * FROM Items";
+                string query = "SELECT * FROM Items WHERE Stock > 0";
                 using (MySqlCommand cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
@@ -172,6 +172,13 @@ namespace PointOfSales.Controllers
                     NewTransactionId = Convert.ToInt32(cmd.LastInsertedId);
                 }
 
+                query = "UPDATE items INNER JOIN carts ON items.ItemID = carts.ItemId SET items.Stock = items.Stock - carts.Amount WHERE carts.TransactionId IS NULL";
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+                
                 query = "UPDATE Carts SET TransactionId = " + NewTransactionId + " WHERE TransactionId IS NULL";
                 using (MySqlCommand cmd = new MySqlCommand(query))
                 {
