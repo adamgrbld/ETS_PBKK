@@ -54,20 +54,20 @@
     </div>
 </div>
 
-<table class="table table-striped table-bordered">
+<table class="table table-striped table-bordered text-center">
     <tr>
-        <th>Item Id</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Stock</th>
-        <th>Image</th>
+        <th>ID Barang</th>
+        <th>Nama Barang</th>
+        <th>Harga</th>
+        <th>Stok</th>
+        <th>Gambar</th>
     </tr>
     @foreach (ItemModel item in Model)
     {
         <tr>
             <td>@item.ItemId</td>
             <td>@item.Name</td>
-            <td>@item.Price</td>
+            <td>Rp. @item.Price.ToString("#,##0.00")</td>
             <td>@item.Stock</td>
             <td>@item.Image</td>
         </tr>

@@ -88,7 +88,7 @@ namespace PointOfSales.Controllers
             string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "SELECT ItemId, Name FROM Items";
+                string query = "SELECT * FROM Items";
                 using (MySqlCommand cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
@@ -101,6 +101,9 @@ namespace PointOfSales.Controllers
                             {
                                 ItemId = Convert.ToInt32(sdr["ItemId"]),
                                 Name = sdr["Name"].ToString(),
+                                Price = Convert.ToInt32(sdr["Price"]),
+                                Stock = Convert.ToInt32(sdr["Stock"]),
+                                Image = sdr["Image"].ToString(),
                             });
                         }
                     }
