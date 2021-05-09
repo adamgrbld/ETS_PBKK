@@ -87,13 +87,35 @@ namespace PointOfSales.Controllers
             string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "INSERT INTO Carts (CartId, ItemId, TransactionID, Amount) VALUES (NULL, " + 
-                    ItemId + ", NULL, " + Amount + ")";
+                int cartCount = 0;
+                string query = "SELECT COUNT(*) FROM Carts WHERE TransactionID IS NULL AND ItemId = " + ItemId;
                 using (MySqlCommand cmd = new MySqlCommand(query))
                 {
                     cmd.Connection = con;
                     con.Open();
-                    cmd.ExecuteNonQuery();
+                    cartCount =  Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+                }
+
+                if (cartCount > 0) {
+                    query = "UPDATE Carts SET Amount = Amount + " + Amount + " WHERE TransactionID IS NULL AND ItemId = " + ItemId;
+                    using (MySqlCommand cmd = new MySqlCommand(query))
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
+                } else {
+                    query = "INSERT INTO Carts (CartId, ItemId, TransactionID, Amount) VALUES (NULL, " + 
+                        ItemId + ", NULL, " + Amount + ")";
+                    using (MySqlCommand cmd = new MySqlCommand(query))
+                    {
+                        cmd.Connection = con;
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                    }
                 }
             }
             return RedirectToAction("Index");
@@ -111,6 +133,7 @@ namespace PointOfSales.Controllers
                     cmd.Connection = con;
                     con.Open();
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
             }
             return RedirectToAction("Index");
@@ -127,6 +150,7 @@ namespace PointOfSales.Controllers
                     cmd.Connection = con;
                     con.Open();
                     cmd.ExecuteNonQuery();
+                    con.Close();
                 }
             }
             return RedirectToAction("Index");
@@ -154,6 +178,7 @@ namespace PointOfSales.Controllers
                     cmd.Connection = con;
                     cmd.ExecuteNonQuery();
                 }
+                con.Close();
             }
             return RedirectToAction("Checkout", new { id = NewTransactionId });
         }
