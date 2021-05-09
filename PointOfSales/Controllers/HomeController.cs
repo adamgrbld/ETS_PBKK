@@ -53,8 +53,26 @@ namespace PointOfSales.Controllers
         [HttpPost]
         public ActionResult createBarang(string brnama, int brharga, int brstok, HttpPostedFileBase brimage)
         {
-            System.Diagnostics.Debug.WriteLine(brnama);
-            return View("StuffList");
+            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                string query = "INSERT INTO Items (ItemId, Name, Price, Stock, Image) VALUES (null, '" + 
+                    brnama + "', " + brharga + ", " +  brstok + "," + "'kosong'" + ")";
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (MySqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+
+                        }
+                    }
+                    con.Close();
+                }
+            }
+            return RedirectToAction("StuffList");
         }
 
         public ActionResult Report()
