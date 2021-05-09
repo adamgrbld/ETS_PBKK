@@ -132,6 +132,32 @@ namespace PointOfSales.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Checkout(int TotalPrice)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                con.Open();
+                int NewTransactionId;
+                string query = "INSERT INTO Transactions (TransactionId, TotalPrice, CreatedAt) VALUES (NULL, " +
+                    TotalPrice + ", NOW())";
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                    NewTransactionId = Convert.ToInt32(cmd.LastInsertedId);
+                }
+
+                query = "UPDATE Carts SET TransactionId = " + NewTransactionId + " WHERE TransactionId IS NULL";
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult StuffList()
         {
             ViewBag.Message = "Your application description page.";
