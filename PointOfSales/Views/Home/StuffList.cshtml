@@ -1,22 +1,70 @@
 ﻿@using PointOfSales.Models
 @model IEnumerable<ItemModel>
 
-@{
-    ViewBag.Title = "Item List";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal" style="margin-bottom: 20px">
+    Tambah
+</button>
 
-<table cellpadding="0" cellspacing="0">
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Barang</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form style="display: flex; flex-direction: column" method="post"
+                      action="createBarang">
+                    <div class="form-group" style="display: flex;">
+                        <label for="brnama" style="margin-top: 6px; margin-right: 10px">Nama: </label>
+                        <input type="text" class="form-control" id="brnama" name="brnama" placeholder="Nama"
+                               style="border-radius: 20px" />
+                    </div>
+                    <div class="form-group" style="display: flex;">
+                        <label for="brharga" style="margin-top: 6px; margin-right: 10px;">Harga: </label>
+                        <input type="number" class="form-control" id="brharga" name="brharga" placeholder="Harga"
+                               style="border-radius: 20px; flex: 1; width: 100%" />
+                    </div>
+                    <div class="form-group" style="display: flex;">
+                        <label for="brstok" style="margin-top: 6px; margin-right: 10px">Harga: </label>
+                        <input type="number" class="form-control" id="brstok" name="brstok" placeholder="Stok"
+                               style="border-radius: 20px" />
+                    </div>
+                    <div class="form-group" style="display: flex;">
+                        <label for="brimage" style="margin-top: 6px; margin-right: 10px">Harga: </label>
+                        <input type="file" class="form-control-file" id="brimage" name="brimage" accept="image/png, image/jpeg" />
+                    </div>
+
+                    <div style="display: flex; flex-direction: column">
+                        <button type="submit" class="text-white btn btn-success" style="margin-bottom: 10px; margin-top: 10px">Simpan</button>
+                        <button class="text-white btn btn-danger" data-dismiss="modal">Batalkan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered">
     <tr>
         <th>Item Id</th>
         <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Image</th>
     </tr>
     @foreach (ItemModel item in Model)
     {
         <tr>
             <td>@item.ItemId</td>
             <td>@item.Name</td>
+            <td>@item.Price</td>
+            <td>@item.Stock</td>
+            <td>@item.Image</td>
         </tr>
     }
 </table>

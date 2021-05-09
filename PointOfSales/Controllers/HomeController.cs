@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 
 using System.Data;
 using System.Configuration;
@@ -47,6 +48,13 @@ namespace PointOfSales.Controllers
             }
 
             return View(items);
+        }
+
+        [HttpPost]
+        public ActionResult createBarang(string brnama, int brharga, int brstok, HttpPostedFileBase brimage)
+        {
+            System.Diagnostics.Debug.WriteLine(brnama);
+            return View("StuffList");
         }
 
         public ActionResult Report()
