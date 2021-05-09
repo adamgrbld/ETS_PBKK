@@ -2,39 +2,40 @@
 @model dynamic
 
 @{
-    ViewBag.Title = "Bill";
+    ViewBag.Title = "Point of Sales";
 }
 
-<<h1 class="text-center mb-4">@ViewBag.Title</h1>
+<h1 class="text-center mb-4">@ViewBag.Title</h1>
 
  <div class="container">
      <div class="col-5 mx-auto">
          <div class="card">
              <table class="table">
                  <tr>
-                     <th colspan="2" class="text-center">Point of Sales</th>
+                     <th colspan="2" class="text-center">Struk Belanja</th>
                  </tr>
                  <tr>
-                     <td>ID</td>
+                     <td>ID Transaksi</td>
+                     <td>@Model.Transaction.TransactionId</td>
                  </tr>
                  <tr>
-                     <td>Waktu</td>
+                     <td>Waktu Pembelian</td>
+                     <td>@Model.Transaction.CreatedAt</td>
                  </tr>
-                 <tr>
-                     <td>Ayam</td>
-                     <td>10.000</td>
-                 </tr>
-                 <tr>
-                     <td>Es Buah</td>
-                     <td>15.000</td>
-                 </tr>
+                @foreach (CartModel cart in Model.Carts)
+                {
+                    <tr>
+                        <td>@cart.Item.Name (@cart.Amount)</td>
+                        <td>Rp. @((cart.Amount*cart.Item.Price).ToString("#,##0.00"))</td>
+                    </tr>
+                 }
                  <div class="col-5"></div>
                  <tr>
                      <td>
                          <b>Total</b>
                      </td>
                      <td>
-                         <b>25000</b>
+                         <b>Rp. @Model.Transaction.TotalPrice.ToString("#,##0.00")</b>
                      </td>
                  </tr>
              </table>

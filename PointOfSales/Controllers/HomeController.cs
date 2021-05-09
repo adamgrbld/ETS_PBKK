@@ -135,10 +135,10 @@ namespace PointOfSales.Controllers
         public ActionResult Checkout(int TotalPrice)
         {
             string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            int NewTransactionId;
             using (MySqlConnection con = new MySqlConnection(constr))
             {
                 con.Open();
-                int NewTransactionId;
                 string query = "INSERT INTO Transactions (TransactionId, TotalPrice, CreatedAt) VALUES (NULL, " +
                     TotalPrice + ", NOW())";
                 using (MySqlCommand cmd = new MySqlCommand(query))
@@ -155,7 +155,7 @@ namespace PointOfSales.Controllers
                     cmd.ExecuteNonQuery();
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Checkout", new { id = NewTransactionId });
         }
 
         public ActionResult StuffList()
@@ -249,18 +249,68 @@ namespace PointOfSales.Controllers
 
             return View(transactions);
         }
-        public ActionResult Bill()
+        public ActionResult Bill(int id)
         {
             ViewBag.Message = "Bill page.";
-            return View();
 
-/*            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
 
-            List<TransactionModel> transactions = new List<TransactionModel>();
+            TransactionModel transaction = new TransactionModel();
+            List<CartModel> carts = new List<CartModel>();
             using (MySqlConnection con = new MySqlConnection(constr))
             {
-                string query = "SELECT T.TransactionsId, I.Name, I.Price FROM Transactions T, Items I, Carts C WHERE T.TransactionsId = C.TransactionsId "
-            }*/
+                string query = "SELECT I.Name, I.Price, C.Amount FROM Items I INNER JOIN Carts C ON I.ItemId = C.ItemId INNER JOIN Transactions T ON C.TransactionId = T.TransactionId WHERE T.TransactionId = " + id;
+
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (MySqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            ItemModel item = new ItemModel
+                            {
+                                Name = sdr["Name"].ToString(),
+                                Price = Convert.ToInt32(sdr["Price"]),
+                            };
+
+                            carts.Add(new CartModel
+                            {
+                                Item = item,
+                                Amount = Convert.ToInt32(sdr["Amount"])
+                            });
+                        }
+                    }
+                    con.Close();
+                }
+
+                query = "SELECT * FROM Transactions WHERE TransactionId = " + id;
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    using (MySqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            transaction = new TransactionModel
+                            {
+                                TransactionId = Convert.ToInt32(sdr["TransactionId"]),
+                                TotalPrice = Convert.ToInt32(sdr["TotalPrice"]),
+                                CreatedAt = Convert.ToDateTime(sdr["CreatedAt"])
+                            };
+                        }
+                    }
+                    con.Close();
+                }
+            }
+
+            dynamic models = new ExpandoObject(); 
+            models.Carts = carts;
+            models.Transaction = transaction;
+
+            return View(models);
         }
     }
 }
