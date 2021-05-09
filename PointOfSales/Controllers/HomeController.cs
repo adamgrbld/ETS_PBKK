@@ -99,6 +99,39 @@ namespace PointOfSales.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public ActionResult RemoveCartById(int CartId)
+        {
+            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                string query = "DELETE FROM Carts WHERE CartId = " + CartId;
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveCart()
+        {
+            string constr = ConfigurationManager.ConnectionStrings["ConString"].ConnectionString;
+            using (MySqlConnection con = new MySqlConnection(constr))
+            {
+                string query = "DELETE FROM Carts WHERE TransactionId IS NULL";
+                using (MySqlCommand cmd = new MySqlCommand(query))
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         public ActionResult StuffList()
         {
             ViewBag.Message = "Your application description page.";

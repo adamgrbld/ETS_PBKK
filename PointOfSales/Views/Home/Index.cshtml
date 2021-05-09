@@ -54,8 +54,7 @@
                             <td>@cart.Item.Name (@cart.Amount)</td>
                             <td>Rp. @((cart.Amount*cart.Item.Price).ToString("#,##0.00"))</td>
                             <td class="text-center">
-                                <!-- TODO: Link to delete 1 item from cart -->
-                                <form>
+                                <form action="Home/RemoveCartById" method="post">
                                     <input type="hidden" name="CartId" value="@cart.CartId"/>
                                     <button type="submit" class="btn btn-sm btn-danger">x</button>
                                 </form>
@@ -68,8 +67,7 @@
                 </div>
                 <!-- TODO: Link to checkout  -->
                 <button type="button" class="btn btn-success btn-block">Bayar</button>
-                <!-- TODO: Link to delete cart  -->
-                <button type="button" class="btn btn-danger btn-block">Batal</button>
+                <button onclick="location.href='Home/RemoveCart'" type="button" class="btn btn-danger btn-block">Batal</button>
             </div>
         </div>
     </div>
